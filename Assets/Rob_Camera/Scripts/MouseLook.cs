@@ -2,34 +2,33 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    [SerializeField] private float m_lookSensitivty;
+    [SerializeField] private float m_lookSensitivity = 100f;
     [SerializeField] private Transform m_cameraParent;
 
-    private Vector3 m_rotationAxis;
+    [Header("Camera Min Max Clamp")]
+    [Tooltip("X = Min, Y = Max")]
+    [SerializeField] private Vector2 m_clampMinMax;
 
-    public Vector3 Forward { get { return transform.forward; } }
+    private float m_pitch = 0f;
+
+    public Vector3 Forward => transform.forward;
 
     private void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
-        m_rotationAxis = Vector3.up;
     }
+
     void Update()
     {
-        transform.RotateAround(m_cameraParent.position, m_rotationAxis, (m_lookSensitivty * Time.deltaTime * Input.GetAxis("Mouse X")));
+        float mouseX = Input.GetAxis("Mouse X") * m_lookSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * m_lookSensitivity * Time.deltaTime;
 
-        m_cameraParent.RotateAround(m_cameraParent.position, transform.right, (m_lookSensitivty * Time.deltaTime * Input.GetAxis("Mouse Y")));
+        transform.Rotate(Vector3.up * mouseX);
 
-        Vector3 euler = m_cameraParent.localEulerAngles;
-        float eulerX = euler.x;
+        m_pitch -= mouseY;
+        m_pitch = Mathf.Clamp(m_pitch, m_clampMinMax.x, m_clampMinMax.y);
 
-        if (eulerX > 180f) eulerX -= 360f;
-        eulerX = Mathf.Clamp(eulerX, -50, 50);
-
-        euler.x = eulerX;
-        m_cameraParent.localRotation = Quaternion.Euler(euler);
-
+        m_cameraParent.localRotation = Quaternion.Euler(m_pitch, 0f, 0f);
     }
 }

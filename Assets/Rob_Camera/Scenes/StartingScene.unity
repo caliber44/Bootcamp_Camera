@@ -381,8 +381,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e894d8aeb226dcc4989f257a646ffe59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_lookSensitivty: 180
+  m_lookSensitivity: 100
   m_cameraParent: {fileID: 438327878}
+  m_clampMinMax: {x: -30, y: 30}
 --- !u!114 &165445239
 MonoBehaviour:
   m_ObjectHideFlags: 0
