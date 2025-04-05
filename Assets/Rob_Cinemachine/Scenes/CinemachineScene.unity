@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 1184140052}
   - component: {fileID: 1184140051}
   - component: {fileID: 1184140050}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 1218255037}
   - component: {fileID: 1218255036}
   - component: {fileID: 1218255035}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -553,7 +553,7 @@ GameObject:
   - component: {fileID: 1321851377}
   - component: {fileID: 1321851376}
   - component: {fileID: 1321851375}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 1649460732}
   - component: {fileID: 1649460731}
   - component: {fileID: 1649460730}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1150,10 +1150,10 @@ MonoBehaviour:
   CameraSide: 0.5
   CameraDistance: 5
   AvoidObstacles:
-    Enabled: 0
+    Enabled: 1
     CollisionFilter:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 64
     IgnoreTag: 
     CameraRadius: 0.2
     DampingIntoCollision: 0
