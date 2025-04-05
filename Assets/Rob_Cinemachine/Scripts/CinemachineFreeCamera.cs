@@ -1,16 +1,15 @@
 using UnityEngine;
 
-namespace RobFreelookCamera
+namespace RobCinemachineFreelookCamera
 {
-    public class FreelookMove : MonoBehaviour
+    public class CinemachineFreeCamera : MonoBehaviour
     {
+
         [Header("Player")]
         [SerializeField] private float m_playerMoveSpeed;
 
         [Header("Camera")]
-        [SerializeField] private Transform m_camera;
-        [SerializeField] private Vector3 m_cameraOffset = new Vector3(0, 5f, -10f);
-        [SerializeField] private float m_cameraSmoothTime = 0.1f;
+        [SerializeField] private Transform m_playerCameraLookTarget;
         [SerializeField] private float m_lookSensitivity = 100f;
         [SerializeField] private float m_cameraLookRotationSmoothSpeed = 10;
 
@@ -18,7 +17,6 @@ namespace RobFreelookCamera
         [Tooltip("X = Min, Y = Max")]
         [SerializeField] private Vector2 m_clampMinMax;
 
-        private Vector3 m_cameraVelocity;
         private float m_currentPitch = 0f;
         private float m_currentYaw = 0f;
 
@@ -30,29 +28,26 @@ namespace RobFreelookCamera
         void Update()
         {
             Move();
-        }
-        private void LateUpdate()
-        {
-            //Late Update for the camera
             Look();
-            CameraFollow();
         }
-        private void SetCursor() 
+        private void SetCursor()
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
-        private void Move() 
+        private void Move()
         {
+            m_playerCameraLookTarget.position = transform.position;
+
             Vector3 move = Vector3.zero;
 
             move.x = Input.GetAxis("Horizontal");
             move.z = Input.GetAxis("Vertical");
 
-            move = m_camera.TransformDirection(move);
+            move = m_playerCameraLookTarget.TransformDirection(move);
 
             move.y = 0; //cancel out the camera tilt
-            //make the direction lengh 1 again and multi by the speed 
+                        //make the direction lengh 1 again and multi by the speed 
             move = move.normalized * m_playerMoveSpeed * Time.deltaTime;
 
             transform.position += move;
@@ -70,21 +65,9 @@ namespace RobFreelookCamera
             m_currentYaw += mouseX;
             m_currentPitch -= mouseY;
             m_currentPitch = Mathf.Clamp(m_currentPitch, m_clampMinMax.x, m_clampMinMax.y);
-        }
-        private void CameraFollow() 
-        {
+
             Quaternion targetRot = Quaternion.Euler(m_currentPitch, m_currentYaw, 0f);
-
-            // Calculate desired camera position based on rotation and offset
-            Vector3 desiredPos = transform.position + targetRot * m_cameraOffset;
-
-            // Smooth position
-            m_camera.position = Vector3.SmoothDamp(m_camera.position, desiredPos, ref m_cameraVelocity, m_cameraSmoothTime);
-
-            // Look at the player
-            m_camera.rotation = Quaternion.Slerp(m_camera.rotation, targetRot, Time.deltaTime * m_cameraLookRotationSmoothSpeed);
+            m_playerCameraLookTarget.rotation = Quaternion.Slerp(m_playerCameraLookTarget.rotation, targetRot, Time.deltaTime * m_cameraLookRotationSmoothSpeed);
         }
-
     }
 }
-
